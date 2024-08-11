@@ -1,12 +1,12 @@
 import { SearchIcon } from "lucide-react"
 import { Button } from "./_components/ui/button"
-import Header from "./_components/ui/header"
+import Header from "./_components/header"
 import { Input } from "./_components/ui/input"
 import Image from "next/image"
 import { db } from "./_lib/prisma"
-import BarbershopItem from "./_components/ui/babershop-item"
+import BarbershopItem from "./_components/babershop-item"
 import { quickSearchOptions } from "./_lib/_constants/search"
-import BookingItem from "./_components/ui/booking-item"
+import BookingItem from "./_components/booking-item"
 
 const Home = async () => {
   const barbershops = await db.barbershop.findMany({})

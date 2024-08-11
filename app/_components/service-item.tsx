@@ -1,7 +1,7 @@
 import { BarbershopService } from "@prisma/client"
 import Image from "next/image"
-import { Button } from "./button"
-import { Card, CardContent } from "./card"
+import { Button } from "./ui/button"
+import { Card, CardContent } from "./ui/card"
 
 interface ServiceItemProps {
   service: BarbershopService
