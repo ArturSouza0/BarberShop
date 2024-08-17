@@ -1,3 +1,5 @@
+"use client"
+
 import { HomeIcon, CalendarIcon, LogOutIcon, LogInIcon } from "lucide-react"
 import { quickSearchOptions } from "../_lib/_constants/search"
 import { Button } from "./ui/button"
@@ -13,8 +15,13 @@ import {
   DialogTrigger,
 } from "./ui/dialog"
 import { Avatar, AvatarImage } from "./ui/avatar"
+import { signIn, signOut, useSession } from "next-auth/react"
 
 const SiderbarSheet = () => {
+  const { data } = useSession()
+  const handlerLoginWithGoogleClick = () => signIn("google")
+  const handleLogoutClick = () => signOut()
+
   return (
     <SheetContent className="overflow-y-auto">
       <SheetHeader>
@@ -22,45 +29,54 @@ const SiderbarSheet = () => {
       </SheetHeader>
 
       <div className="flex items-center justify-between gap-3 border-b border-solid py-5">
-        <h2 className="font-bold">Olá faça seu login!</h2>
-
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button size="icon">
-              <LogInIcon />
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="w-[90%]">
-            <DialogHeader>
-              <DialogTitle>Faça o login na plataforma</DialogTitle>
-              <DialogDescription>
-                Conecte-se usando sua conta do Google.
-              </DialogDescription>
-            </DialogHeader>
-            <Button variant="outline" className="gap-1 font-bold">
-              <Image
-                alt="logo google"
-                src="/google.svg"
-                width={18}
-                height={18}
+        {data?.user ? (
+          <div className="flex items-center gap-2">
+            <Avatar>
+              <AvatarImage
+                className="object-cover"
+                src={data?.user?.image ?? ""}
               />
-              Google
-            </Button>
-          </DialogContent>
-        </Dialog>
-        <Avatar>
-          <AvatarImage
-            className="object-cover"
-            src="https://plus.unsplash.com/premium_photo-1664536392779-049ba8fde933?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTN8fGF2YXRhcnxlbnwwfHwwfHx8MA%3D%3D"
-          />
-        </Avatar>
+            </Avatar>
 
-        <div>
-          <p className="font-bold">Artur Souza</p>
-          <p className="text-xs">artur.devprofissional@gmail.com</p>
-        </div>
+            <div>
+              <p className="font-bold">{data.user.name}</p>
+              <p className="text-xs">{data.user.email}</p>
+            </div>
+          </div>
+        ) : (
+          <>
+            <h2 className="font-bold">Olá faça seu login!</h2>
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button size="icon">
+                  <LogInIcon />
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="w-[90%]">
+                <DialogHeader>
+                  <DialogTitle>Faça o login na plataforma</DialogTitle>
+                  <DialogDescription>
+                    Conecte-se usando sua conta do Google.
+                  </DialogDescription>
+                </DialogHeader>
+                <Button
+                  variant="outline"
+                  className="gap-1 font-bold"
+                  onClick={handlerLoginWithGoogleClick}
+                >
+                  <Image
+                    alt="logo google"
+                    src="/google.svg"
+                    width={18}
+                    height={18}
+                  />
+                  Google
+                </Button>
+              </DialogContent>
+            </Dialog>
+          </>
+        )}
       </div>
-
       <div className="flex flex-col gap-2 border-b border-solid py-5">
         <SheetClose asChild>
           <Button className="justify-start gap-2" variant="ghost" asChild>
@@ -95,7 +111,11 @@ const SiderbarSheet = () => {
       </div>
 
       <div className="flex flex-col gap-2 py-5">
-        <Button variant="ghost" className="justify-start gap-2">
+        <Button
+          variant="ghost"
+          className="justify-start gap-2"
+          onClick={handleLogoutClick}
+        >
           <LogOutIcon size={18} />
           Sair da conta
         </Button>
