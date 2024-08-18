@@ -3,7 +3,7 @@ import Image from "next/image"
 import { Sheet, SheetTrigger } from "./ui/sheet"
 import { Button } from "./ui/button"
 import { MenuIcon } from "lucide-react"
-import SiderbarSheet from "./siderbar-sheet"
+import SiderbarSheet from "./sidebar-sheet"
 import Link from "next/link"
 
 const Header = () => {
